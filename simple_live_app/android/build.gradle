@@ -1,0 +1,30 @@
+buildscript {
+    ext.kotlin_version = '2.2.20'  // 添加这一行：最新 Kotlin 版本
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.4'  // 更新 AGP 到兼容版（如果未有，添加）
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"  // 引用 Kotlin 插件
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
